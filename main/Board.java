@@ -141,9 +141,14 @@ public class Board extends JPanel{
                     
                     if(isValidMove(new Move(this, selectedPiece, c, r))) {
 
-                        g2d.setColor(new Color(68, 180,57,190));
+                        g2d.setColor(new Color(68, 180,5,190));
                         g2d.fillRect(c * tileSize, r * tileSize, tileSize, tileSize);
 
+                    }
+
+                    if(getPiece(c, r) != null && getPiece(c, r).isRacist != selectedPiece.isRacist && isValidMove(new Move(this, selectedPiece, c, r))){
+                        g2d.setColor(new Color(200, 5,0,240));
+                        g2d.fillRect(c * tileSize, r * tileSize, tileSize, tileSize);
                     }
                 }
             }
