@@ -17,7 +17,7 @@ public class Promotion {
 
 
         // Create dialog
-        dialog = new JDialog(SwingUtilities.getWindowAncestor(parent), "Pawn Promotion", Dialog.ModalityType.APPLICATION_MODAL);
+        dialog = new JDialog(SwingUtilities.getWindowAncestor(parent), "Time To Decide", Dialog.ModalityType.APPLICATION_MODAL);
         dialog.setUndecorated(true);
         dialog.getContentPane().setBackground(new Color(106, 130, 149));
 

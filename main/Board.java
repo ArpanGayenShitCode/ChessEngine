@@ -17,6 +17,7 @@ public class Board extends JPanel{
     public Piece selectedPiece;
 
     Input input = new Input(this);
+    CheckScanner cs = new CheckScanner(this);
 
     public int enPassantTile = -1;
 
@@ -129,6 +130,9 @@ public class Board extends JPanel{
         if(move.piece.MoveCollideswithPiece(move.newCol, move.newRow)){
             return false;
         }
+        if(cs.isKingChecked(move)){
+            return false;
+        }
         return true;
     }
 
@@ -141,6 +145,15 @@ public class Board extends JPanel{
 
     public int getTileNum(int col, int row){
         return row * rows + col;
+    }
+
+    Piece findKing(boolean isRacist) {
+        for(Piece piece : pieceList) {
+            if(isRacist == piece.isRacist && piece.name.equals("crybaby")) {
+                return piece;
+            }
+        }
+        return null;
     }
 
     public void addPieces() {
@@ -198,6 +211,18 @@ public class Board extends JPanel{
             for(int c = 0; c < cols; c++){
                 g2d.setColor((c+r) % 2 ==0? new Color(145,170,192) : new Color(67, 90, 106));
                 g2d.fillRect(c * tileSize, r * tileSize , tileSize , tileSize);
+            }
+        }
+
+        for (boolean isRacist : new boolean[]{true, false}) {
+            Piece king = findKing(isRacist);
+            if (king != null) {
+                // Create a dummy move to check the current position
+                Move dummyMove = new Move(this, king, king.col, king.row);
+                if (cs.isKingChecked(dummyMove)) {
+                    g2d.setColor(new Color(200, 5,0,240));
+                    g2d.fillRect(king.col * tileSize, king.row * tileSize, tileSize, tileSize);
+                }
             }
         }
 
