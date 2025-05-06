@@ -12,12 +12,9 @@ import java.awt.event.MouseEvent;
 public class Promotion {
     private final JDialog dialog;
     private String selectedPiece = "Queen"; // Default to Queen
-    private final boolean isRacist;
-    private final int tileSize;
 
     public Promotion(Component parent, boolean isRacist, int tileSize) {
-        this.isRacist = isRacist;
-        this.tileSize = tileSize;
+
 
         // Create dialog
         dialog = new JDialog(SwingUtilities.getWindowAncestor(parent), "Pawn Promotion", Dialog.ModalityType.APPLICATION_MODAL);
