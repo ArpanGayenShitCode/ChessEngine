@@ -17,9 +17,14 @@ public class Board extends JPanel{
 
     public Piece selectedPiece;
 
+    Input input = new Input(this);
 
     public Board(){
         this.setPreferredSize(new Dimension(cols * tileSize, rows * tileSize));
+
+        this.addMouseListener(input);
+        this.addMouseMotionListener(input);
+
         addPieces();
     }
 
@@ -30,9 +35,6 @@ public class Board extends JPanel{
             if(piece.col == col && piece.row == row)
                 return piece;
         }
-
-
-
         return null;
     }
 
