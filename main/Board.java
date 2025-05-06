@@ -217,9 +217,8 @@ public class Board extends JPanel{
         for (boolean isRacist : new boolean[]{true, false}) {
             Piece king = findKing(isRacist);
             if (king != null) {
-                // Create a dummy move to check the current position
-                Move dummyMove = new Move(this, king, king.col, king.row);
-                if (cs.isKingChecked(dummyMove)) {
+                Move dummy = new Move(this, king, king.col, king.row);
+                if (cs.isKingChecked(dummy)) {
                     g2d.setColor(new Color(200, 5,0,240));
                     g2d.fillRect(king.col * tileSize, king.row * tileSize, tileSize, tileSize);
                 }
