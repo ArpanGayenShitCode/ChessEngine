@@ -1,12 +1,11 @@
 package main;
 
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 
 import pieces.Piece;
 
-public class Input implements MouseListener, MouseMotionListener{
+public class Input extends MouseAdapter{
 
     Board board;
 
@@ -63,19 +62,4 @@ public class Input implements MouseListener, MouseMotionListener{
 
     }
 
-
-    @Override
-    public void mouseMoved(MouseEvent e) {}
-
-
-    @Override
-    public void mouseClicked(MouseEvent e) {}
-
-
-    @Override
-    public void mouseEntered(MouseEvent e) {}
-
-
-    @Override
-    public void mouseExited(MouseEvent e) {}
 }

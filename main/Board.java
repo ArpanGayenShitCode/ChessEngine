@@ -43,8 +43,8 @@ public class Board extends JPanel{
 
         move.piece.col = move.newCol;
         move.piece.row = move.newRow;
-        move.piece.yPos = move.newCol * tileSize;
-        move.piece.xPos = move.newRow * tileSize;
+        move.piece.xPos = move.newCol * tileSize;
+        move.piece.yPos = move.newRow * tileSize;
 
         capture(move);
     }
