@@ -20,4 +20,35 @@ public class Pawn extends Piece{
 
     }
 
+    public boolean isValidMovement(int col, int row) {
+        
+        int colourIndex = isRacist? 1 : -1;
+
+        //push 1
+        if(this.col == col && row == this.row - colourIndex && board.getPiece(col, row) == null)
+            return true;
+
+        //push 2
+        if(isFirstMove && this.col == col && row == this.row - colourIndex * 2 && board.getPiece(col, row) == null && board.getPiece(col, row + colourIndex) == null)
+            return true;
+
+        //capture left
+        if(col == this.col - 1 && row == this.row - colourIndex && board.getPiece(col, row) != null)
+            return true;
+
+        //capture right
+        if(col == this.col + 1 && row == this.row - colourIndex && board.getPiece(col, row) != null)
+            return true; 
+            
+        //en passant left
+        if(board.getTileNum(col, row) == board.enPassantTile && col == this.col - 1 && row == this.row - colourIndex && board.getPiece(col , row + colourIndex) != null)
+            return true;
+
+        //en passant right
+        if(board.getTileNum(col, row) == board.enPassantTile && col == this.col + 1 && row == this.row - colourIndex && board.getPiece(col , row + colourIndex) != null)
+            return true;
+
+        return false;
+    }
+
 }

@@ -1,7 +1,6 @@
 package main;
 import java.awt.*;
 import java.util.ArrayList;
-
 import javax.swing.JPanel;
 
 import pieces.*;
@@ -19,6 +18,8 @@ public class Board extends JPanel{
 
     Input input = new Input(this);
 
+    public int enPassantTile = -1;
+
     public Board(){
         this.setPreferredSize(new Dimension(cols * tileSize, rows * tileSize));
 
@@ -27,7 +28,6 @@ public class Board extends JPanel{
 
         addPieces();
     }
-
 
     public Piece getPiece(int col, int row) {
 
@@ -40,17 +40,80 @@ public class Board extends JPanel{
 
     public void makeMove(Move move) {
 
+        if(move.piece.name.equals("juicer")) {
+            movePawn(move);
+        }
+        else {
+            move.piece.col = move.newCol;
+            move.piece.row = move.newRow;
+            move.piece.xPos = move.newCol * tileSize;
+            move.piece.yPos = move.newRow * tileSize;
+
+            move.piece.isFirstMove = false;
+
+            capture(move.capture);
+        }
+        
+    }
+
+    public void movePawn(Move move) {
+
+        //en passant
+        int colourIndex =  move.piece.isRacist? 1 : -1;
+
+        if(getTileNum(move.newCol, move.newRow) == enPassantTile){
+            move.capture = getPiece(move.newCol, move.newRow + colourIndex);
+        }
+        if(Math.abs(move.piece.row - move.newRow) == 2) {
+            enPassantTile = getTileNum(move.newCol, move.newRow + colourIndex);
+        }
+        else {
+            enPassantTile = -1;
+        }
+
+        //promotion
+        colourIndex = move.piece.isRacist? 0 : 7;
+        if(move.newRow == colourIndex) {
+            promotePawn(move);
+        }
+
 
         move.piece.col = move.newCol;
         move.piece.row = move.newRow;
         move.piece.xPos = move.newCol * tileSize;
         move.piece.yPos = move.newRow * tileSize;
 
-        capture(move);
+        move.piece.isFirstMove = false;
+
+        capture(move.capture);
     }
 
-    public void capture(Move move){
-        pieceList.remove(move.capture);
+    private void promotePawn(Move move) {
+        Promotion dialog = new Promotion(this, move.piece.isRacist, tileSize);
+        String choice = dialog.showDialog();
+        
+        Piece newPiece;
+        switch (choice) {
+            case "Rook":
+                newPiece = new Rook(this, move.newCol, move.newRow, move.piece.isRacist);
+                break;
+            case "Knight":
+                newPiece = new Knight(this, move.newCol, move.newRow, move.piece.isRacist);
+                break;
+            case "Bishop":
+                newPiece = new Bishop(this, move.newCol, move.newRow, move.piece.isRacist);
+                break;
+            default:
+                newPiece = new Queen(this, move.newCol, move.newRow, move.piece.isRacist);
+                break;
+        }
+        pieceList.add(newPiece);
+        capture(move.piece);
+    }
+
+
+    public void capture(Piece piece){
+        pieceList.remove(piece);
     }
 
     public boolean isValidMove(Move move){
@@ -76,6 +139,9 @@ public class Board extends JPanel{
         return x.isRacist == y.isRacist;
     }
 
+    public int getTileNum(int col, int row){
+        return row * rows + col;
+    }
 
     public void addPieces() {
         //Negro Pieces
@@ -121,6 +187,7 @@ public class Board extends JPanel{
             pieceList.add(new Pawn(this, 7, 6, true));
 
     }
+
 
 
     public void paintComponent(Graphics g){
