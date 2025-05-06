@@ -15,6 +15,8 @@ public class Board extends JPanel{
 
     ArrayList<Piece> pieceList = new ArrayList<>();
 
+    public Piece selectedPiece;
+
 
     public Board(){
         this.setPreferredSize(new Dimension(cols * tileSize, rows * tileSize));
@@ -32,6 +34,36 @@ public class Board extends JPanel{
 
 
         return null;
+    }
+
+    public void makeMove(Move move) {
+
+
+        move.piece.col = move.newCol;
+        move.piece.row = move.newRow;
+        move.piece.yPos = move.newCol * tileSize;
+        move.piece.xPos = move.newRow * tileSize;
+
+        capture(move);
+    }
+
+    public void capture(Move move){
+        pieceList.remove(move.capture);
+    }
+
+    public boolean isValidMove(Move move){
+
+        if(sameTeam(move.piece, move.capture)) {
+            return false;
+        }
+        return true;
+    }
+
+    public boolean sameTeam(Piece x, Piece y){
+        if (x == null || y == null) {
+            return false;
+        }
+        return x.isRacist == y.isRacist;
     }
 
 

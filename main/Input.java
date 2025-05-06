@@ -4,49 +4,78 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
+import pieces.Piece;
+
 public class Input implements MouseListener, MouseMotionListener{
 
-    public void mouseDragged(MouseEvent e) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'mouseDragged'");
+    Board board;
+
+    public Input(Board board){
+        this.board = board;
     }
 
-
     public void mousePressed(MouseEvent e) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'mousePressed'");
+        
+        int col = e.getX() / board.tileSize;
+        int row = e.getY() / board.tileSize;
+
+        Piece pieceXY = board.getPiece(col, row);
+        if(pieceXY != null){
+            board.selectedPiece = pieceXY;
+        }
+
+
+    }
+
+    public void mouseDragged(MouseEvent e) {
+        
+        if(board.selectedPiece != null){
+            board.selectedPiece.xPos = e.getX() - board.tileSize / 2;
+            board.selectedPiece.yPos = e.getY() - board.tileSize / 2;
+
+            board.repaint();
+        }
+
+
     }
 
     public void mouseReleased(MouseEvent e) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'mouseReleased'");
+
+        int col = e.getX() / board.tileSize;
+        int row = e.getY() / board.tileSize;
+
+        if(board.selectedPiece != null){
+            Move move = new Move(board, board.selectedPiece, col, row);
+
+            if(board.isValidMove(move)){
+                board.makeMove(move);
+            }
+            else{
+                board.selectedPiece.xPos  = board.selectedPiece.col * board.tileSize;
+                board.selectedPiece.yPos  = board.selectedPiece.row * board.tileSize;
+            }
+
+        }
+
+        board.selectedPiece = null;
+        board.repaint();
+
+
     }
 
 
     @Override
-    public void mouseMoved(MouseEvent e) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'mouseMoved'");
-    }
+    public void mouseMoved(MouseEvent e) {}
 
 
     @Override
-    public void mouseClicked(MouseEvent e) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'mouseClicked'");
-    }
+    public void mouseClicked(MouseEvent e) {}
 
 
     @Override
-    public void mouseEntered(MouseEvent e) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'mouseEntered'");
-    }
+    public void mouseEntered(MouseEvent e) {}
 
 
     @Override
-    public void mouseExited(MouseEvent e) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'mouseExited'");
-    }
+    public void mouseExited(MouseEvent e) {}
 }
