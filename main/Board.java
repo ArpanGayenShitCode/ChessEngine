@@ -17,9 +17,12 @@ public class Board extends JPanel{
     public Piece selectedPiece;
 
     Input input = new Input(this);
-    CheckScanner cs = new CheckScanner(this);
+    public CheckScanner cs = new CheckScanner(this);
 
     public int enPassantTile = -1;
+
+    private boolean isRacistMove = true;
+    private boolean isGameOver = false;
 
     public Board(){
         this.setPreferredSize(new Dimension(cols * tileSize, rows * tileSize));
@@ -44,17 +47,38 @@ public class Board extends JPanel{
         if(move.piece.name.equals("juicer")) {
             movePawn(move);
         }
-        else {
-            move.piece.col = move.newCol;
-            move.piece.row = move.newRow;
-            move.piece.xPos = move.newCol * tileSize;
-            move.piece.yPos = move.newRow * tileSize;
-
-            move.piece.isFirstMove = false;
-
-            capture(move.capture);
+        else if(move.piece.name.equals("crybaby")){
+            moveKing(move);
         }
+        move.piece.col = move.newCol;
+        move.piece.row = move.newRow;
+        move.piece.xPos = move.newCol * tileSize;
+        move.piece.yPos = move.newRow * tileSize;
+        move.piece.isFirstMove = false;
+
+        capture(move.capture);
+
+        isRacistMove = !isRacistMove;
         
+        updateGameState();
+    }
+        
+
+    private void moveKing(Move move) {
+
+        if(Math.abs(move.piece.col - move.newCol) == 2) {
+            Piece rook;
+            if(move.piece.col < move.newCol) {
+                rook = getPiece(7, move.piece.row);
+                rook.col = 5;
+            }
+            else {
+                rook = getPiece(0, move.piece.row);
+                rook.col = 3;
+            }
+            rook.xPos = rook.col * tileSize;
+        }
+
     }
 
     public void movePawn(Move move) {
@@ -77,16 +101,6 @@ public class Board extends JPanel{
         if(move.newRow == colourIndex) {
             promotePawn(move);
         }
-
-
-        move.piece.col = move.newCol;
-        move.piece.row = move.newRow;
-        move.piece.xPos = move.newCol * tileSize;
-        move.piece.yPos = move.newRow * tileSize;
-
-        move.piece.isFirstMove = false;
-
-        capture(move.capture);
     }
 
     private void promotePawn(Move move) {
@@ -119,6 +133,12 @@ public class Board extends JPanel{
 
     public boolean isValidMove(Move move){
 
+        if(isGameOver){
+            return false;
+        }
+        if(move.piece.isRacist != isRacistMove){
+            return false;
+        }
         if(sameTeam(move.piece, move.capture)) {
             return false;
         }
@@ -201,7 +221,17 @@ public class Board extends JPanel{
 
     }
 
-
+    private void updateGameState() {
+        Piece king = findKing(isRacistMove);
+        if(cs.isGameOver(king)) {
+            if(cs.isKingChecked(new Move(this, king, king.col, king.row))) {
+                System.out.println( isRacistMove ? "Black Won" : "White Won");
+            }
+            else {
+                System.out.println("Stalemate");
+            }
+        }
+    }
 
     public void paintComponent(Graphics g){
         Graphics2D g2d = (Graphics2D) g;
