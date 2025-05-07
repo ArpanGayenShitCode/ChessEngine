@@ -19,7 +19,7 @@ public class Promotion {
         // Create dialog
         dialog = new JDialog(SwingUtilities.getWindowAncestor(parent), "Time To Decide", Dialog.ModalityType.APPLICATION_MODAL);
         dialog.setUndecorated(true);
-        dialog.getContentPane().setBackground(new Color(106, 130, 149));
+        dialog.getContentPane().setBackground(new Color(41, 93, 136));
 
         // Load piece sprites
         BufferedImage sheet;
@@ -50,14 +50,15 @@ public class Promotion {
                 .getScaledInstance(tileSize * 3 / 4, tileSize * 3 / 4, BufferedImage.SCALE_SMOOTH);
         } catch (IOException e) {
             e.printStackTrace();
-            // Use default Queen if sprite loading fails
             return;
         }
 
-        // Create panel with GridBagLayout
         JPanel panel = new JPanel(new GridBagLayout());
-        panel.setBackground(new Color(106, 130, 149));
-        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        panel.setBackground(new Color(41, 93, 136));
+        panel.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(Color.BLACK, 1),
+            BorderFactory.createEmptyBorder(10, 10, 10, 10)
+        ));
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(0, 5, 0, 5); // Spacing between buttons
         gbc.fill = GridBagConstraints.NONE;
@@ -68,7 +69,7 @@ public class Promotion {
 
         // Create buttons with hover effect
         JButton queenButton = new JButton(new ImageIcon(queenSprite));
-        queenButton.setBackground(new Color(106, 130, 149));
+        queenButton.setBackground(new Color(41, 93, 136));
         queenButton.setBorder(BorderFactory.createLineBorder(Color.WHITE));
         queenButton.setPreferredSize(normalSize);
         queenButton.addActionListener(e -> {
@@ -95,7 +96,7 @@ public class Promotion {
         panel.add(queenButton, gbc);
 
         JButton rookButton = new JButton(new ImageIcon(rookSprite));
-        rookButton.setBackground(new Color(106, 130, 149));
+        rookButton.setBackground(new Color(41, 93, 136));
         rookButton.setBorder(BorderFactory.createLineBorder(Color.WHITE));
         rookButton.setPreferredSize(normalSize);
         rookButton.addActionListener(e -> {
@@ -122,7 +123,7 @@ public class Promotion {
         panel.add(rookButton, gbc);
 
         JButton knightButton = new JButton(new ImageIcon(knightSprite));
-        knightButton.setBackground(new Color(106, 130, 149));
+        knightButton.setBackground(new Color(41, 93, 136));
         knightButton.setBorder(BorderFactory.createLineBorder(Color.WHITE));
         knightButton.setPreferredSize(normalSize);
         knightButton.addActionListener(e -> {
@@ -149,7 +150,7 @@ public class Promotion {
         panel.add(knightButton, gbc);
 
         JButton bishopButton = new JButton(new ImageIcon(bishopSprite));
-        bishopButton.setBackground(new Color(106, 130, 149));
+        bishopButton.setBackground(new Color(41, 93, 136));
         bishopButton.setBorder(BorderFactory.createLineBorder(Color.WHITE));
         bishopButton.setPreferredSize(normalSize);
         bishopButton.addActionListener(e -> {

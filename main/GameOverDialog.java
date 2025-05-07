@@ -5,18 +5,25 @@ import java.awt.*;
 
 public class GameOverDialog {
     private final JDialog dialog;
+    private final Board board;
 
     public GameOverDialog(Component parent, boolean isCheckmate, boolean isRacistMove) {
+        this.board = (Board) parent;
         // Create dialog
         dialog = new JDialog(SwingUtilities.getWindowAncestor(parent), "Game Over", Dialog.ModalityType.APPLICATION_MODAL);
         dialog.setUndecorated(true);
-        dialog.getContentPane().setBackground(new Color(106, 130, 149)); // #6A8295
+        // CHANGED: Changed dialog background to RGB(41, 93, 136)
+        dialog.getContentPane().setBackground(new Color(41, 93, 136));
 
         // Create panel
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.setBackground(new Color(106, 130, 149));
-        panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        // CHANGED: Changed panel background to RGB(41, 93, 136)
+        panel.setBackground(new Color(41, 93, 136));
+        panel.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(Color.BLACK, 1),
+            BorderFactory.createEmptyBorder(20, 20, 20, 20)
+        ));
 
         // Status label (CHECKMATE or STALEMATE)
         JLabel statusLabel = new JLabel(isCheckmate ? "CHECKMATE" : "STALEMATE");
@@ -39,16 +46,37 @@ public class GameOverDialog {
         panel.add(Box.createVerticalStrut(10)); // Spacing
         panel.add(outcomeLabel);
 
-        // OK button
-        JButton okButton = new JButton("OK");
-        okButton.setFont(new Font("Arial", Font.PLAIN, 18));
-        okButton.setBackground(new Color(106, 130, 149));
-        okButton.setForeground(Color.WHITE);
-        okButton.setBorder(BorderFactory.createLineBorder(Color.WHITE));
-        okButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        okButton.addActionListener(e -> dialog.dispose());
+        // Button panel for OK, New Game, Quit
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 0));
+        // CHANGED: Changed button panel background to RGB(41, 93, 136)
+        buttonPanel.setBackground(new Color(41, 93, 136));
+
+        // New Game button
+        JButton newGameButton = new JButton("New Game");
+        newGameButton.setFont(new Font("Arial", Font.PLAIN, 18));
+        // CHANGED: Changed button background to RGB(41, 93, 136)
+        newGameButton.setBackground(new Color(41, 93, 136));
+        newGameButton.setForeground(Color.WHITE);
+        newGameButton.setBorder(BorderFactory.createLineBorder(Color.WHITE));
+        newGameButton.addActionListener(e -> {
+            board.resetBoard();
+            dialog.dispose();
+        });
+        buttonPanel.add(newGameButton);
+
+        // Quit button
+        JButton quitButton = new JButton("Quit");
+        quitButton.setFont(new Font("Arial", Font.PLAIN, 18));
+        // CHANGED: Changed button background to RGB(41, 93, 136)
+        quitButton.setBackground(new Color(41, 93, 136));
+        quitButton.setForeground(Color.WHITE);
+        quitButton.setBorder(BorderFactory.createLineBorder(Color.WHITE));
+        quitButton.addActionListener(e -> System.exit(0));
+        buttonPanel.add(quitButton);
+
         panel.add(Box.createVerticalStrut(20));
-        panel.add(okButton);
+        panel.add(buttonPanel);
 
         // Set up dialog
         dialog.getContentPane().add(panel);
