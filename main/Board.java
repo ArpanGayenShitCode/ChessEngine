@@ -8,11 +8,14 @@ import pieces.*;
 public class Board extends JPanel {
     
     public int tileSize = 100;
+
     int cols = 8;
     int rows = 8;
+
     ArrayList<Piece> pieceList = new ArrayList<>();
 
     public Piece selectedPiece;
+    private MoveHistoryPanel historyPanel;
     Input input = new Input(this);
     public CheckScanner cs = new CheckScanner(this);
 
@@ -20,7 +23,6 @@ public class Board extends JPanel {
     private boolean isRacistMove = true;
     private boolean isGameOver = false;
     private boolean justReset = false;
-    private boolean isPainting = false;
 
     public Board() {
         this.setPreferredSize(new Dimension(cols * tileSize, rows * tileSize));
@@ -38,6 +40,9 @@ public class Board extends JPanel {
     }
 
     public void makeMove(Move move) {
+        // Store isFirstMove before updating it
+        boolean wasFirstMove = move.piece.isFirstMove;
+
         if (move.piece.name.equals("juicer")) {
             movePawn(move);
         } else if (move.piece.name.equals("crybaby")) {
@@ -56,6 +61,16 @@ public class Board extends JPanel {
 
         isRacistMove = !isRacistMove;
         repaint();
+
+        // Add move to history before checking game state
+        if (historyPanel != null) {
+            String notation = convertToAlgebraic(move, wasFirstMove);
+            historyPanel.addMove(notation, move.piece.isRacist);
+            // Force history panel repaint
+            historyPanel.revalidate();
+            historyPanel.repaint();
+        }
+
         justReset = false;
         updateGameState("makeMove");
     }
@@ -113,33 +128,69 @@ public class Board extends JPanel {
         capture(move.piece);
     }
 
+private String convertToAlgebraic(Move move, boolean wasFirstMove) {
+    // Detect castling
+    if (move.piece.name.equals("crybaby") && Math.abs(move.newCol - move.oldCol) == 2) {
+        return move.newCol > move.oldCol ? "O-O" : "O-O-O";
+    }
+
+    // Piece notation
+    String pieceCode = switch (move.piece.name) {
+        case "crybaby" -> "K";
+        case "her" -> "Q";
+        case "rookie boi" -> "R";
+        case "popefrancis" -> "B";
+        case "horsie" -> "N";
+        case "juicer" -> "";
+        default -> "";
+    };
+
+    // Capture logic
+    String capture = (move.capture != null) ? "x" : "";
+    String pawnPrefix = "";
+    if (move.piece.name.equals("juicer") && move.capture != null) {
+        pawnPrefix = (char) ('a' + move.oldCol) + "";
+    }
+
+    // Target square
+    String file = String.valueOf((char) ('a' + move.newCol));
+    int rank = 8 - move.newRow;
+
+    // Check and checkmate (real-time)
+    String checkSuffix = "";
+    Piece opponentKing = findKing(!move.piece.isRacist);
+    if (opponentKing != null) {
+        Move dummy = new Move(this, opponentKing, opponentKing.col, opponentKing.row);
+        System.out.println(cs.isKingChecked(dummy));
+        if (cs.isKingChecked(dummy)) {
+            checkSuffix = cs.isGameOver(opponentKing) ? "#" : "+";
+        }
+    }
+
+    return pieceCode + pawnPrefix + capture + file + rank + checkSuffix;
+}
+
     public void capture(Piece piece) {
         pieceList.remove(piece);
     }
 
     public boolean isValidMove(Move move) {
         if (isGameOver) {
-            System.out.println("Move rejected: isGameOver is true");
             return false;
         }
         if (move.piece.isRacist != isRacistMove) {
-            System.out.println("Move rejected: Wrong turn (isRacistMove=" + isRacistMove + ", piece.isRacist=" + move.piece.isRacist + ")");
             return false;
         }
         if (sameTeam(move.piece, move.capture)) {
-            System.out.println("Move rejected: Same team capture");
             return false;
         }
         if (!move.piece.isValidMovement(move.newCol, move.newRow)) {
-            System.out.println("Move rejected: Invalid movement for " + move.piece.name);
             return false;
         }
         if (move.piece.MoveCollideswithPiece(move.newCol, move.newRow)) {
-            System.out.println("Move rejected: Collision with piece at (" + move.newCol + ", " + move.newRow + ")");
             return false;
         }
-        if (!isPainting && cs.isKingChecked(move)) {
-            System.out.println("Move rejected: Move puts king in check");
+        if (cs.isKingChecked(move)) {
             return false;
         }
         return true;
@@ -178,46 +229,37 @@ public class Board extends JPanel {
         input = new Input(this);
         this.addMouseListener(input);
         this.addMouseMotionListener(input);
+        if (historyPanel != null) {
+            historyPanel.reset(); // Clear move history
+        }
     }
 
     public void addPieces() {
         // Negro Pieces
-        pieceList.add(new Rook(this, 0, 0, false));
-        pieceList.add(new Knight(this, 1, 0, false));
-        pieceList.add(new Bishop(this, 2, 0, false));
-        pieceList.add(new Queen(this, 3, 0, false));
+        //pieceList.add(new Rook(this, 0, 0, false));
+        // pieceList.add(new Knight(this, 1, 0, false));
+        // pieceList.add(new Bishop(this, 2, 0, false));
+        // pieceList.add(new Queen(this, 3, 0, false));
         pieceList.add(new King(this, 4, 0, false));
-        pieceList.add(new Bishop(this, 5, 0, false));
-        pieceList.add(new Knight(this, 6, 0, false));
-        pieceList.add(new Rook(this, 7, 0, false));
+        // pieceList.add(new Bishop(this, 5, 0, false));
+        // pieceList.add(new Knight(this, 6, 0, false));
+        //pieceList.add(new Rook(this, 7, 0, false));
         //Pawns
-        pieceList.add(new Pawn(this, 0, 1, false));
-        pieceList.add(new Pawn(this, 1, 1, false));
-        pieceList.add(new Pawn(this, 2, 1, false));
-        pieceList.add(new Pawn(this, 3, 1, false));
-        pieceList.add(new Pawn(this, 4, 1, false));
-        pieceList.add(new Pawn(this, 5, 1, false));
-        pieceList.add(new Pawn(this, 6, 1, false));
-        pieceList.add(new Pawn(this, 7, 1, false));
+        // for(int col = 0; col < cols; col++)
+        //     pieceList.add(new Pawn(this, col, 1, false));
 
         // Racist Pieces
-        pieceList.add(new Rook(this, 0, 7, true));
-        pieceList.add(new Knight(this, 1, 7, true));
-        pieceList.add(new Bishop(this, 2, 7, true));
-        pieceList.add(new Queen(this, 3, 7, true));
-        pieceList.add(new King(this, 4, 7, true));
-        pieceList.add(new Bishop(this, 5, 7, true));
-        pieceList.add(new Knight(this, 6, 7, true));
-        pieceList.add(new Rook(this, 7, 7, true));
+        // pieceList.add(new Rook(this, 0, 7, true));
+        // pieceList.add(new Knight(this, 1, 7, true));
+        // pieceList.add(new Bishop(this, 2, 7, true));
+         pieceList.add(new Queen(this, 3, 7, true));
+         pieceList.add(new King(this, 4, 7, true));
+        // pieceList.add(new Bishop(this, 5, 7, true));
+        // pieceList.add(new Knight(this, 6, 7, true));
+        // pieceList.add(new Rook(this, 7, 7, true));
         //Pawns
-        pieceList.add(new Pawn(this, 0, 6, true));
-        pieceList.add(new Pawn(this, 1, 6, true));
-        pieceList.add(new Pawn(this, 2, 6, true));
-        pieceList.add(new Pawn(this, 3, 6, true));
-        pieceList.add(new Pawn(this, 4, 6, true));
-        pieceList.add(new Pawn(this, 5, 6, true));
-        pieceList.add(new Pawn(this, 6, 6, true));
-        pieceList.add(new Pawn(this, 7, 6, true));
+        // for(int col = 0; col < cols; col++)
+        //     pieceList.add(new Pawn(this, col, 6, true));
 
         for (Piece piece : pieceList) {
             piece.isFirstMove = true;
@@ -225,24 +267,29 @@ public class Board extends JPanel {
     }
 
     private void updateGameState(String context) {
-        System.out.println("updateGameState called from " + context + ": justReset=" + justReset + ", isGameOver=" + isGameOver);
         if (justReset || pieceList.isEmpty() || pieceList.size() < 2) {
-            System.out.println("updateGameState skipped: justReset=" + justReset + ", pieceList.size=" + pieceList.size());
+            
             return;
         }
         Piece king = findKing(isRacistMove);
         if (king != null && cs.isGameOver(king)) {
             boolean isCheckmate = cs.isKingChecked(new Move(this, king, king.col, king.row));
-            System.out.println("Game over detected: isCheckmate=" + isCheckmate + ", isRacistMove=" + isRacistMove);
-            System.out.println("Setting isGameOver to true in updateGameState");
             isGameOver = true;
+            // Force history panel repaint before showing dialog
+            if (historyPanel != null) {
+                historyPanel.revalidate();
+                historyPanel.repaint();
+            }
             GameOverDialog dialog = new GameOverDialog(this, isCheckmate, isRacistMove);
             dialog.showDialog();
         }
     }
 
+    public void setMoveHistoryPanel(MoveHistoryPanel panel) {
+        this.historyPanel = panel;
+    }
+
     public void paintComponent(Graphics g) {
-        isPainting = true;
         Graphics2D g2d = (Graphics2D) g;
 
         // paint board
@@ -258,7 +305,7 @@ public class Board extends JPanel {
             Piece king = findKing(isRacist);
             if (king != null) {
                 Move dummy = new Move(this, king, king.col, king.row);
-                if (!isPainting && cs.isKingChecked(dummy)) {
+                if (cs.isKingChecked(dummy)) {
                     g2d.setColor(new Color(200, 5, 0, 240));
                     g2d.fillRect(king.col * tileSize, king.row * tileSize, tileSize, tileSize);
                 }
@@ -286,6 +333,5 @@ public class Board extends JPanel {
         for (Piece piece : pieceList) {
             piece.paint(g2d);
         }
-        isPainting = false;
     }
 }
