@@ -6,8 +6,8 @@ import java.awt.*;
 public class MoveHistoryPanel extends JPanel {
     private final JPanel moveListPanel;
     private int moveCounter = 1;
-    private JLabel currentMoveLabel; // Tracks the current move pair's JLabel
-    private String pendingWhiteMove = ""; // Buffers white's move
+    private JLabel currentMoveLabel;
+    private String pendingWhiteMove = "";
 
     public MoveHistoryPanel() {
         setLayout(new BorderLayout());
@@ -26,19 +26,16 @@ public class MoveHistoryPanel extends JPanel {
 
     public void addMove(String notation, boolean isWhiteMove) {
         if (isWhiteMove) {
-            // Store white's move and create a new JLabel
             pendingWhiteMove = moveCounter + ". " + notation;
             currentMoveLabel = createMoveLabel(pendingWhiteMove);
             moveListPanel.add(Box.createVerticalStrut(5));
             moveListPanel.add(currentMoveLabel);
         } else {
-            // Append black's move to the current JLabel and increment move counter
             String fullMove = pendingWhiteMove + " " + notation;
             currentMoveLabel.setText(fullMove);
             moveCounter++;
-            pendingWhiteMove = ""; // Clear buffer
+            pendingWhiteMove = "";
         }
-        // Force immediate UI update
         revalidate();
         repaint();
         SwingUtilities.invokeLater(() -> {
@@ -55,7 +52,7 @@ public class MoveHistoryPanel extends JPanel {
         label.setFont(new Font("Monospaced", Font.PLAIN, 14));
         label.setBorder(BorderFactory.createEmptyBorder(8, 10, 8, 10));
         label.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30));
-        label.setHorizontalAlignment(SwingConstants.RIGHT); // Right-align text
+        label.setHorizontalAlignment(SwingConstants.RIGHT); 
         return label;
     }
 

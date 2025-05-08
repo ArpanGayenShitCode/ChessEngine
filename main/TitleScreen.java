@@ -14,11 +14,10 @@ public class TitleScreen extends JPanel {
         setBackground(BACKGROUND_COLOR);
         setLayout(new BorderLayout());
 
-        // Content container with vertical layout, left-aligned
         JPanel content = new JPanel();
         content.setBackground(BACKGROUND_COLOR);
         content.setLayout(new BoxLayout(content, BoxLayout.Y_AXIS));
-        content.setBorder(BorderFactory.createEmptyBorder(50, 50, 50, 50)); // padding
+        content.setBorder(BorderFactory.createEmptyBorder(50, 50, 50, 50));
 
         // Title
         JLabel titleLabel = new JLabel("Scaccomatto");
@@ -44,7 +43,7 @@ public class TitleScreen extends JPanel {
         content.add(Box.createVerticalStrut(10));
         content.add(quitButton);
 
-        add(content, BorderLayout.WEST); // anchor left
+        add(content, BorderLayout.WEST);
     }
 
     private JButton createStyledButton(String text) {

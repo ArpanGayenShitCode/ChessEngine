@@ -11,7 +11,7 @@ import java.awt.event.MouseEvent;
 
 public class Promotion {
     private final JDialog dialog;
-    private String selectedPiece = "Queen"; // Default to Queen
+    private String selectedPiece = "Queen";
 
     public Promotion(Component parent, boolean isRacist, int tileSize) {
 
@@ -60,11 +60,11 @@ public class Promotion {
             BorderFactory.createEmptyBorder(10, 10, 10, 10)
         ));
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(0, 5, 0, 5); // Spacing between buttons
+        gbc.insets = new Insets(0, 5, 0, 5);
         gbc.fill = GridBagConstraints.NONE;
 
         // Button sizes
-        Dimension normalSize = new Dimension(tileSize / 2 + 10, tileSize / 2 + 10); // Padding for borders
+        Dimension normalSize = new Dimension(tileSize / 2 + 10, tileSize / 2 + 10);
         Dimension largeSize = new Dimension(tileSize * 3 / 4 + 10, tileSize * 3 / 4 + 10);
 
         // Create buttons with hover effect
@@ -176,7 +176,6 @@ public class Promotion {
         gbc.gridx = 3;
         panel.add(bishopButton, gbc);
 
-        // Set up dialog
         dialog.getContentPane().add(panel);
         dialog.pack();
         dialog.setLocationRelativeTo(parent);

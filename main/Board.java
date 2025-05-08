@@ -132,7 +132,6 @@ public class Board extends JPanel {
         // Detect castling
         if (move.piece.name.equals("crybaby") && Math.abs(move.newCol - move.oldCol) == 2) {
             String castlingNotation = move.newCol > move.oldCol ? "O-O" : "O-O-O";
-            System.out.println("Castling detected: " + castlingNotation + " (newCol=" + move.newCol + ", oldCol=" + move.oldCol + ")");
             return castlingNotation;
         }
 
@@ -163,45 +162,33 @@ public class Board extends JPanel {
         Piece opponentKing = findKing(!move.piece.isRacist);
         if (opponentKing != null) {
             boolean isCheck = debugCheckKing(opponentKing.col, opponentKing.row, opponentKing.isRacist);
-            System.out.println("Checking king at (" + opponentKing.col + ", " + opponentKing.row + "): isCheck=" + isCheck);
-            // Debug board state
-            System.out.println("Board state:");
-            for (Piece p : pieceList) {
-                System.out.println("Piece: " + p.name + " at (" + p.col + ", " + p.row + "), isRacist=" + p.isRacist);
-            }
             if (isCheck) {
                 boolean isCheckmate = cs.isGameOver(opponentKing);
                 checkSuffix = isCheckmate ? "#" : "+";
-                System.out.println("Check status: isCheck=" + isCheck + ", isCheckmate=" + isCheckmate + ", suffix=" + checkSuffix);
             }
-        } else {
-            System.out.println("Opponent king not found for isRacist=" + !move.piece.isRacist);
         }
 
         String notation = pieceCode + pawnPrefix + capture + file + rank + checkSuffix;
-        System.out.println("Generated notation: " + notation);
         return notation;
     }
 
     private boolean debugCheckKing(int kingCol, int kingRow, boolean kingIsRacist) {
-    System.out.println("Debugging check for king at (" + kingCol + ", " + kingRow + "), isRacist=" + kingIsRacist);
     for (Piece piece : pieceList) {
         if (piece != null && piece.isRacist != kingIsRacist) {
             if (piece.isValidMovement(kingCol, kingRow) && !piece.MoveCollideswithPiece(kingCol, kingRow)) {
                 if (piece.name.equals("juicer")) {
-                    int colourVal = piece.isRacist ? 1 : -1;
+                    System.out.println("juicer check at" + piece.col + " " + piece.row);
+                    int colourVal = !piece.isRacist ? 1 : -1;
                     if (Math.abs(piece.col - kingCol) == 1 && kingRow == piece.row + colourVal) {
-                        System.out.println("Piece " + piece.name + " at (" + piece.col + ", " + piece.row + ") can attack king");
+                        System.out.println("juicer check");
                         return true;
                     }
                 } else {
-                    System.out.println("Piece " + piece.name + " at (" + piece.col + ", " + piece.row + ") can attack king");
                     return true;
                 }
             }
         }
     }
-    System.out.println("No pieces can attack king");
     return false;
 }
 
@@ -279,7 +266,7 @@ public class Board extends JPanel {
         pieceList.add(new Bishop(this, 5, 0, false));
         pieceList.add(new Knight(this, 6, 0, false));
         pieceList.add(new Rook(this, 7, 0, false));
-        //Pawns
+        // Pawns
         for(int col = 0; col < cols; col++)
             pieceList.add(new Pawn(this, col, 1, false));
 
@@ -295,7 +282,6 @@ public class Board extends JPanel {
         //Pawns
         for(int col = 0; col < cols; col++)
             pieceList.add(new Pawn(this, col, 6, true));
-
         for (Piece piece : pieceList) {
             piece.isFirstMove = true;
         }
