@@ -128,46 +128,81 @@ public class Board extends JPanel {
         capture(move.piece);
     }
 
-private String convertToAlgebraic(Move move, boolean wasFirstMove) {
-    // Detect castling
-    if (move.piece.name.equals("crybaby") && Math.abs(move.newCol - move.oldCol) == 2) {
-        return move.newCol > move.oldCol ? "O-O" : "O-O-O";
+    private String convertToAlgebraic(Move move, boolean wasFirstMove) {
+        // Detect castling
+        if (move.piece.name.equals("crybaby") && Math.abs(move.newCol - move.oldCol) == 2) {
+            String castlingNotation = move.newCol > move.oldCol ? "O-O" : "O-O-O";
+            System.out.println("Castling detected: " + castlingNotation + " (newCol=" + move.newCol + ", oldCol=" + move.oldCol + ")");
+            return castlingNotation;
+        }
+
+        // Piece notation
+        String pieceCode = switch (move.piece.name) {
+            case "crybaby" -> "K";
+            case "her" -> "Q";
+            case "rookie boi" -> "R";
+            case "popefrancis" -> "B";
+            case "horsie" -> "N";
+            case "juicer" -> "";
+            default -> "";
+        };
+
+        // Capture logic
+        String capture = (move.capture != null) ? "x" : "";
+        String pawnPrefix = "";
+        if (move.piece.name.equals("juicer") && move.capture != null) {
+            pawnPrefix = (char) ('a' + move.oldCol) + "";
+        }
+
+        // Target square
+        String file = String.valueOf((char) ('a' + move.newCol));
+        int rank = 8 - move.newRow;
+
+        // Check and checkmate (real-time)
+        String checkSuffix = "";
+        Piece opponentKing = findKing(!move.piece.isRacist);
+        if (opponentKing != null) {
+            boolean isCheck = debugCheckKing(opponentKing.col, opponentKing.row, opponentKing.isRacist);
+            System.out.println("Checking king at (" + opponentKing.col + ", " + opponentKing.row + "): isCheck=" + isCheck);
+            // Debug board state
+            System.out.println("Board state:");
+            for (Piece p : pieceList) {
+                System.out.println("Piece: " + p.name + " at (" + p.col + ", " + p.row + "), isRacist=" + p.isRacist);
+            }
+            if (isCheck) {
+                boolean isCheckmate = cs.isGameOver(opponentKing);
+                checkSuffix = isCheckmate ? "#" : "+";
+                System.out.println("Check status: isCheck=" + isCheck + ", isCheckmate=" + isCheckmate + ", suffix=" + checkSuffix);
+            }
+        } else {
+            System.out.println("Opponent king not found for isRacist=" + !move.piece.isRacist);
+        }
+
+        String notation = pieceCode + pawnPrefix + capture + file + rank + checkSuffix;
+        System.out.println("Generated notation: " + notation);
+        return notation;
     }
 
-    // Piece notation
-    String pieceCode = switch (move.piece.name) {
-        case "crybaby" -> "K";
-        case "her" -> "Q";
-        case "rookie boi" -> "R";
-        case "popefrancis" -> "B";
-        case "horsie" -> "N";
-        case "juicer" -> "";
-        default -> "";
-    };
-
-    // Capture logic
-    String capture = (move.capture != null) ? "x" : "";
-    String pawnPrefix = "";
-    if (move.piece.name.equals("juicer") && move.capture != null) {
-        pawnPrefix = (char) ('a' + move.oldCol) + "";
-    }
-
-    // Target square
-    String file = String.valueOf((char) ('a' + move.newCol));
-    int rank = 8 - move.newRow;
-
-    // Check and checkmate (real-time)
-    String checkSuffix = "";
-    Piece opponentKing = findKing(!move.piece.isRacist);
-    if (opponentKing != null) {
-        Move dummy = new Move(this, opponentKing, opponentKing.col, opponentKing.row);
-        System.out.println(cs.isKingChecked(dummy));
-        if (cs.isKingChecked(dummy)) {
-            checkSuffix = cs.isGameOver(opponentKing) ? "#" : "+";
+    private boolean debugCheckKing(int kingCol, int kingRow, boolean kingIsRacist) {
+    System.out.println("Debugging check for king at (" + kingCol + ", " + kingRow + "), isRacist=" + kingIsRacist);
+    for (Piece piece : pieceList) {
+        if (piece != null && piece.isRacist != kingIsRacist) {
+            if (piece.isValidMovement(kingCol, kingRow) && !piece.MoveCollideswithPiece(kingCol, kingRow)) {
+                if (piece.name.equals("juicer")) {
+                    int colourVal = piece.isRacist ? 1 : -1;
+                    if (Math.abs(piece.col - kingCol) == 1 && kingRow == piece.row + colourVal) {
+                        System.out.println("Piece " + piece.name + " at (" + piece.col + ", " + piece.row + ") can attack king");
+                        return true;
+                    }
+                } else {
+                    System.out.println("Piece " + piece.name + " at (" + piece.col + ", " + piece.row + ") can attack king");
+                    return true;
+                }
+            }
         }
     }
-
-    return pieceCode + pawnPrefix + capture + file + rank + checkSuffix;
+    System.out.println("No pieces can attack king");
+    return false;
 }
 
     public void capture(Piece piece) {
@@ -236,30 +271,30 @@ private String convertToAlgebraic(Move move, boolean wasFirstMove) {
 
     public void addPieces() {
         // Negro Pieces
-        //pieceList.add(new Rook(this, 0, 0, false));
-        // pieceList.add(new Knight(this, 1, 0, false));
-        // pieceList.add(new Bishop(this, 2, 0, false));
-        // pieceList.add(new Queen(this, 3, 0, false));
+        pieceList.add(new Rook(this, 0, 0, false));
+        pieceList.add(new Knight(this, 1, 0, false));
+        pieceList.add(new Bishop(this, 2, 0, false));
+        pieceList.add(new Queen(this, 3, 0, false));
         pieceList.add(new King(this, 4, 0, false));
-        // pieceList.add(new Bishop(this, 5, 0, false));
-        // pieceList.add(new Knight(this, 6, 0, false));
-        //pieceList.add(new Rook(this, 7, 0, false));
+        pieceList.add(new Bishop(this, 5, 0, false));
+        pieceList.add(new Knight(this, 6, 0, false));
+        pieceList.add(new Rook(this, 7, 0, false));
         //Pawns
-        // for(int col = 0; col < cols; col++)
-        //     pieceList.add(new Pawn(this, col, 1, false));
+        for(int col = 0; col < cols; col++)
+            pieceList.add(new Pawn(this, col, 1, false));
 
-        // Racist Pieces
-        // pieceList.add(new Rook(this, 0, 7, true));
-        // pieceList.add(new Knight(this, 1, 7, true));
-        // pieceList.add(new Bishop(this, 2, 7, true));
-         pieceList.add(new Queen(this, 3, 7, true));
-         pieceList.add(new King(this, 4, 7, true));
-        // pieceList.add(new Bishop(this, 5, 7, true));
-        // pieceList.add(new Knight(this, 6, 7, true));
-        // pieceList.add(new Rook(this, 7, 7, true));
+        //Racist Pieces
+        pieceList.add(new Rook(this, 0, 7, true));
+        pieceList.add(new Knight(this, 1, 7, true));
+        pieceList.add(new Bishop(this, 2, 7, true));
+        pieceList.add(new Queen(this, 3, 7, true));
+        pieceList.add(new King(this, 4, 7, true));
+        pieceList.add(new Bishop(this, 5, 7, true));
+        pieceList.add(new Knight(this, 6, 7, true));
+        pieceList.add(new Rook(this, 7, 7, true));
         //Pawns
-        // for(int col = 0; col < cols; col++)
-        //     pieceList.add(new Pawn(this, col, 6, true));
+        for(int col = 0; col < cols; col++)
+            pieceList.add(new Pawn(this, col, 6, true));
 
         for (Piece piece : pieceList) {
             piece.isFirstMove = true;
