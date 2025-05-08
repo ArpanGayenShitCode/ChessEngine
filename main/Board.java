@@ -23,6 +23,7 @@ public class Board extends JPanel {
     private boolean isRacistMove = true;
     private boolean isGameOver = false;
     private boolean justReset = false;
+    private String lastPromotionResult = null;
 
     public Board() {
         this.setPreferredSize(new Dimension(cols * tileSize, rows * tileSize));
@@ -113,15 +114,19 @@ public class Board extends JPanel {
         switch (choice) {
             case "Rook":
                 newPiece = new Rook(this, move.newCol, move.newRow, move.piece.isRacist);
+                lastPromotionResult = "R";
                 break;
             case "Knight":
                 newPiece = new Knight(this, move.newCol, move.newRow, move.piece.isRacist);
+                lastPromotionResult = "N";
                 break;
             case "Bishop":
                 newPiece = new Bishop(this, move.newCol, move.newRow, move.piece.isRacist);
+                lastPromotionResult = "B";
                 break;
             default:
                 newPiece = new Queen(this, move.newCol, move.newRow, move.piece.isRacist);
+                lastPromotionResult = "Q";
                 break;
         }
         pieceList.add(newPiece);
@@ -157,6 +162,13 @@ public class Board extends JPanel {
         String file = String.valueOf((char) ('a' + move.newCol));
         int rank = 8 - move.newRow;
 
+        String notation = pieceCode + pawnPrefix + capture + file + rank;
+
+        if(lastPromotionResult != null && pieceCode.equals("")){
+            notation += "=" + lastPromotionResult;
+            lastPromotionResult = null;
+        }
+
         // Check and checkmate (real-time)
         String checkSuffix = "";
         Piece opponentKing = findKing(!move.piece.isRacist);
@@ -167,8 +179,8 @@ public class Board extends JPanel {
                 checkSuffix = isCheckmate ? "#" : "+";
             }
         }
-
-        String notation = pieceCode + pawnPrefix + capture + file + rank + checkSuffix;
+        
+        notation += checkSuffix;
         return notation;
     }
 
