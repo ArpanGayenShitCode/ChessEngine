@@ -10,7 +10,7 @@ public class Main {
         frame.setIconImage(img.getImage());
         frame.setTitle("Scaccomatto");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(1100, 1000);
+        frame.setSize(1600, 1000);
         frame.setLocationRelativeTo(null);
 
         CardLayout cardLayout = new CardLayout();
@@ -50,14 +50,14 @@ class CreditScreen extends JPanel {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         JLabel title = new JLabel("Credits");
-        title.setFont(new Font("Arial", Font.BOLD, 36));
+        title.setFont(new Font("ITC Benguiat Book", Font.BOLD, 36));
         title.setForeground(Color.WHITE);
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
         add(Box.createVerticalStrut(50));
         add(title);
 
         JLabel name = new JLabel("Made by Arpan Gayen XI A");
-        name.setFont(new Font("Arial", Font.PLAIN, 24));
+        name.setFont(new Font("Monda", Font.PLAIN, 24));
         name.setForeground(Color.WHITE);
         name.setAlignmentX(Component.CENTER_ALIGNMENT);
         add(Box.createVerticalStrut(20));

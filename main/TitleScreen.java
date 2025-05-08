@@ -7,7 +7,7 @@ import java.awt.event.MouseEvent;
 
 public class TitleScreen extends JPanel {
     private static final Color BACKGROUND_COLOR = new Color(23, 21, 19);
-    private static final Color BUTTON_COLOR = new Color(41, 93, 136);
+    private static final Color BUTTON_COLOR = new Color(23, 21, 19);
     private static final Color TEXT_COLOR = Color.WHITE;
 
     public TitleScreen(JFrame frame, CardLayout cardLayout, JPanel cardPanel) {
@@ -21,7 +21,7 @@ public class TitleScreen extends JPanel {
 
         // Title
         JLabel titleLabel = new JLabel("Scaccomatto");
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 48));
+        titleLabel.setFont(new Font("ITC Benguiat Book", Font.BOLD, 48));
         titleLabel.setForeground(TEXT_COLOR);
         titleLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
         content.add(titleLabel);
@@ -48,7 +48,7 @@ public class TitleScreen extends JPanel {
 
     private JButton createStyledButton(String text) {
         JButton button = new JButton(text);
-        button.setFont(new Font("Arial", Font.PLAIN, 24));
+        button.setFont(new Font("Monda", Font.PLAIN, 24));
         button.setBackground(BUTTON_COLOR);
         button.setForeground(TEXT_COLOR);
         button.setBorder(BorderFactory.createLineBorder(TEXT_COLOR, 2));
@@ -60,8 +60,8 @@ public class TitleScreen extends JPanel {
             @Override
             public void mouseEntered(MouseEvent e) {
                 button.setBorder(BorderFactory.createLineBorder(TEXT_COLOR, 4));
-                button.setBackground(new Color(61, 113, 156));
-                button.setFont(new Font("Arial", Font.BOLD, 26));
+                button.setBackground(new Color(61, 113, 156)); //rgb(23, 21, 19)
+                button.setFont(new Font("Monda", Font.BOLD, 30));
                 button.revalidate();
             }
 
@@ -69,7 +69,7 @@ public class TitleScreen extends JPanel {
             public void mouseExited(MouseEvent e) {
                 button.setBorder(BorderFactory.createLineBorder(TEXT_COLOR, 2));
                 button.setBackground(BUTTON_COLOR);
-                button.setFont(new Font("Arial", Font.PLAIN, 24));
+                button.setFont(new Font("Monda", Font.PLAIN, 24));
                 button.revalidate();
             }
         });

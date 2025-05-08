@@ -34,7 +34,8 @@ public class King extends Piece{
                 if( rook != null && rook.isFirstMove && isFirstMove){
                     return board.getPiece(5, row) == null &&
                            board.getPiece(6, row) == null &&
-                           !board.cs.isKingChecked(new Move(board, this, 5, row));
+                           !board.cs.isKingChecked(new Move(board, this, 5, row)) &&
+                           !board.cs.isKingChecked(new Move(board, this, 4, row));
                 }
             }
             else if(col == 2){
@@ -43,7 +44,8 @@ public class King extends Piece{
                     return board.getPiece(3, row) == null &&
                            board.getPiece(2, row) == null &&
                            board.getPiece(1, row) == null &&
-                           !board.cs.isKingChecked(new Move(board, this, 3, row));
+                           !board.cs.isKingChecked(new Move(board, this, 3, row)) && 
+                           !board.cs.isKingChecked(new Move(board, this, 4, row));
                 }
             }
         }

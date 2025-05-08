@@ -137,6 +137,14 @@ public class Board extends JPanel {
         // Detect castling
         if (move.piece.name.equals("crybaby") && Math.abs(move.newCol - move.oldCol) == 2) {
             String castlingNotation = move.newCol > move.oldCol ? "O-O" : "O-O-O";
+            Piece opponentKing = findKing(!move.piece.isRacist);
+            if (opponentKing != null) {
+                boolean isCheck = debugCheckKing(opponentKing.col, opponentKing.row, opponentKing.isRacist);
+                if (isCheck) {
+                    boolean isCheckmate = cs.isGameOver(opponentKing);
+                    return castlingNotation + (isCheckmate ? "#" : "+");
+                }
+            }
             return castlingNotation;
         }
 
@@ -164,12 +172,13 @@ public class Board extends JPanel {
 
         String notation = pieceCode + pawnPrefix + capture + file + rank;
 
+        //Promotion
         if(lastPromotionResult != null && pieceCode.equals("")){
             notation += "=" + lastPromotionResult;
             lastPromotionResult = null;
         }
 
-        // Check and checkmate (real-time)
+        // Check and checkmate
         String checkSuffix = "";
         Piece opponentKing = findKing(!move.piece.isRacist);
         if (opponentKing != null) {
@@ -184,15 +193,14 @@ public class Board extends JPanel {
         return notation;
     }
 
+
     private boolean debugCheckKing(int kingCol, int kingRow, boolean kingIsRacist) {
     for (Piece piece : pieceList) {
         if (piece != null && piece.isRacist != kingIsRacist) {
             if (piece.isValidMovement(kingCol, kingRow) && !piece.MoveCollideswithPiece(kingCol, kingRow)) {
                 if (piece.name.equals("juicer")) {
-                    System.out.println("juicer check at" + piece.col + " " + piece.row);
                     int colourVal = !piece.isRacist ? 1 : -1;
                     if (Math.abs(piece.col - kingCol) == 1 && kingRow == piece.row + colourVal) {
-                        System.out.println("juicer check");
                         return true;
                     }
                 } else {
@@ -264,7 +272,7 @@ public class Board extends JPanel {
         this.addMouseListener(input);
         this.addMouseMotionListener(input);
         if (historyPanel != null) {
-            historyPanel.reset(); // Clear move history
+            historyPanel.reset();
         }
     }
 
@@ -282,7 +290,7 @@ public class Board extends JPanel {
         for(int col = 0; col < cols; col++)
             pieceList.add(new Pawn(this, col, 1, false));
 
-        //Racist Pieces
+        // Racist Pieces
         pieceList.add(new Rook(this, 0, 7, true));
         pieceList.add(new Knight(this, 1, 7, true));
         pieceList.add(new Bishop(this, 2, 7, true));
@@ -291,7 +299,7 @@ public class Board extends JPanel {
         pieceList.add(new Bishop(this, 5, 7, true));
         pieceList.add(new Knight(this, 6, 7, true));
         pieceList.add(new Rook(this, 7, 7, true));
-        //Pawns
+        // Pawns
         for(int col = 0; col < cols; col++)
             pieceList.add(new Pawn(this, col, 6, true));
         for (Piece piece : pieceList) {
@@ -308,7 +316,6 @@ public class Board extends JPanel {
         if (king != null && cs.isGameOver(king)) {
             boolean isCheckmate = cs.isKingChecked(new Move(this, king, king.col, king.row));
             isGameOver = true;
-            // Force history panel repaint before showing dialog
             if (historyPanel != null) {
                 historyPanel.revalidate();
                 historyPanel.repaint();
