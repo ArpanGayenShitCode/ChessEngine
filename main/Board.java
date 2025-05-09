@@ -331,16 +331,16 @@ public class Board extends JPanel {
 
         // Racist Pieces
         pieceList.add(new Rook(this, 0, 7, true));
-        // pieceList.add(new Knight(this, 1, 7, true));
-        // pieceList.add(new Bishop(this, 2, 7, true));
-        // pieceList.add(new Queen(this, 3, 7, true));
+        pieceList.add(new Knight(this, 1, 7, true));
+        pieceList.add(new Bishop(this, 2, 7, true));
+        pieceList.add(new Queen(this, 3, 7, true));
         pieceList.add(new King(this, 4, 7, true));
-        // pieceList.add(new Bishop(this, 5, 7, true));
-        // pieceList.add(new Knight(this, 6, 7, true));
+        pieceList.add(new Bishop(this, 5, 7, true));
+        pieceList.add(new Knight(this, 6, 7, true));
         pieceList.add(new Rook(this, 7, 7, true));
         // Pawns
-        // for(int col = 0; col < cols; col++)
-        //     pieceList.add(new Pawn(this, col, 6, true));
+        for(int col = 0; col < cols; col++)
+            pieceList.add(new Pawn(this, col, 6, true));
         for (Piece piece : pieceList) {
             piece.isFirstMove = true;
         }
