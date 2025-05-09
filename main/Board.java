@@ -234,22 +234,22 @@ public class Board extends JPanel {
 
 
     private boolean debugCheckKing(int kingCol, int kingRow, boolean kingIsRacist) {
-    for (Piece piece : pieceList) {
-        if (piece != null && piece.isRacist != kingIsRacist) {
-            if (piece.isValidMovement(kingCol, kingRow) && !piece.MoveCollideswithPiece(kingCol, kingRow)) {
-                if (piece.name.equals("juicer")) {
-                    int colourVal = !piece.isRacist ? 1 : -1;
-                    if (Math.abs(piece.col - kingCol) == 1 && kingRow == piece.row + colourVal) {
+        for (Piece piece : pieceList) {
+            if (piece != null && piece.isRacist != kingIsRacist) {
+                if (piece.isValidMovement(kingCol, kingRow) && !piece.MoveCollideswithPiece(kingCol, kingRow)) {
+                    if (piece.name.equals("juicer")) {
+                        int colourVal = !piece.isRacist ? 1 : -1;
+                        if (Math.abs(piece.col - kingCol) == 1 && kingRow == piece.row + colourVal) {
+                            return true;
+                        }
+                    } else {
                         return true;
                     }
-                } else {
-                    return true;
                 }
             }
         }
+        return false;
     }
-    return false;
-}
 
     public void capture(Piece piece) {
         pieceList.remove(piece);
