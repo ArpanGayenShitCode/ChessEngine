@@ -11,19 +11,19 @@ public class GameOverDialog {
         this.board = (Board) parent;
         dialog = new JDialog(SwingUtilities.getWindowAncestor(parent), "Game Over", Dialog.ModalityType.APPLICATION_MODAL);
         dialog.setUndecorated(true);
-        dialog.getContentPane().setBackground(new Color(41, 93, 136));
+        dialog.getContentPane().setBackground(new Color(27, 199, 162));
 
         // Create panel
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.setBackground(new Color(41, 93, 136));
+        panel.setBackground(new Color(27, 199, 162));
         panel.setBorder(BorderFactory.createCompoundBorder(
             BorderFactory.createLineBorder(Color.BLACK, 1),
             BorderFactory.createEmptyBorder(20, 20, 20, 20)
         ));
 
         JLabel statusLabel = new JLabel(isCheckmate ? "CHECKMATE" : "STALEMATE");
-        statusLabel.setFont(new Font("Arial", Font.BOLD, 36));
+        statusLabel.setFont(new Font("ITC Benguiat Book", Font.BOLD, 45));
         statusLabel.setForeground(Color.WHITE);
         statusLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         panel.add(statusLabel);
@@ -36,7 +36,7 @@ public class GameOverDialog {
             outcomeText = "The game is a draw";
         }
         JLabel outcomeLabel = new JLabel(outcomeText);
-        outcomeLabel.setFont(new Font("Arial", Font.PLAIN, 24));
+        outcomeLabel.setFont(new Font("Monda", Font.BOLD, 24));
         outcomeLabel.setForeground(Color.WHITE);
         outcomeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         panel.add(Box.createVerticalStrut(10));
@@ -44,12 +44,12 @@ public class GameOverDialog {
 
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 0));
-        buttonPanel.setBackground(new Color(41, 93, 136));
+        buttonPanel.setBackground(new Color(27, 199, 162));
 
         // New Game button
         JButton newGameButton = new JButton("New Game");
-        newGameButton.setFont(new Font("Arial", Font.PLAIN, 18));
-        newGameButton.setBackground(new Color(41, 93, 136));
+        newGameButton.setFont(new Font("Monda", Font.PLAIN, 18));
+        newGameButton.setBackground(new Color(27, 199, 162));
         newGameButton.setForeground(Color.WHITE);
         newGameButton.setBorder(BorderFactory.createLineBorder(Color.WHITE));
         newGameButton.addActionListener(e -> {
@@ -60,8 +60,8 @@ public class GameOverDialog {
 
         // Quit button
         JButton quitButton = new JButton("Quit");
-        quitButton.setFont(new Font("Arial", Font.PLAIN, 18));
-        quitButton.setBackground(new Color(41, 93, 136));
+        quitButton.setFont(new Font("Monda", Font.PLAIN, 18));
+        quitButton.setBackground(new Color(27, 199, 162));
         quitButton.setForeground(Color.WHITE);
         quitButton.setBorder(BorderFactory.createLineBorder(Color.WHITE));
         quitButton.addActionListener(e -> System.exit(0));
@@ -75,7 +75,7 @@ public class GameOverDialog {
         dialog.pack();
         dialog.setLocationRelativeTo(parent);
         try {
-            ImageIcon icon = new ImageIcon("res\\icno.png");
+            ImageIcon icon = new ImageIcon("res\\images\\icno.png");
             dialog.setIconImage(icon.getImage());
         } catch (Exception e) {
             e.printStackTrace();

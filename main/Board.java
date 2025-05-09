@@ -159,6 +159,45 @@ public class Board extends JPanel {
             default -> "";
         };
 
+        //ts doesnt fucking work kuahsILWDjkuhedfewbf
+        String disambiguation = "";
+        if (!pieceCode.isEmpty() && !pieceCode.equals("K")) {
+            boolean needsFile = false;
+            boolean needsRank = false;
+            int sameFileCount = 0;
+            int sameRankCount = 0;
+            
+            for (Piece other : pieceList) {
+                if (other == move.piece || !other.name.equals(move.piece.name) || other.isRacist != move.piece.isRacist) {
+                    continue;
+                }
+                Move altMove = new Move(this, other, move.newCol, move.newRow);
+                if (isValidMove(altMove)) {
+                    if (other.col == move.oldCol) {
+                        sameFileCount++;
+                        needsRank = true; // Multiple pieces on the same file
+                    } else if (other.row == move.oldRow) {
+                        sameRankCount++;
+                        needsFile = true; // Multiple pieces on the same rank
+                    } else {
+                        needsFile = true; // Different file and rank, need file to disambiguate
+                    }
+                }
+            }
+
+            // Determine disambiguation based on need
+            if (needsFile && needsRank) {
+                // Rare case: both file and rank needed (e.g., three knights on same rank and file)
+                disambiguation = (char)('a' + move.oldCol) + String.valueOf(8 - move.oldRow);
+            } else if (needsFile || sameFileCount > 0) {
+                // Prefer file disambiguation if multiple pieces can move to the square
+                disambiguation = String.valueOf((char)('a' + move.oldCol));
+            } else if (needsRank || sameRankCount > 0) {
+                // Use rank if file is the same for multiple pieces
+                disambiguation = String.valueOf(8 - move.oldRow);
+            }
+        }
+
         // Capture logic
         String capture = (move.capture != null) ? "x" : "";
         String pawnPrefix = "";
@@ -170,7 +209,7 @@ public class Board extends JPanel {
         String file = String.valueOf((char) ('a' + move.newCol));
         int rank = 8 - move.newRow;
 
-        String notation = pieceCode + pawnPrefix + capture + file + rank;
+        String notation = pieceCode + disambiguation + pawnPrefix + capture + file + rank;
 
         //Promotion
         if(lastPromotionResult != null && pieceCode.equals("")){
@@ -292,16 +331,16 @@ public class Board extends JPanel {
 
         // Racist Pieces
         pieceList.add(new Rook(this, 0, 7, true));
-        pieceList.add(new Knight(this, 1, 7, true));
-        pieceList.add(new Bishop(this, 2, 7, true));
-        pieceList.add(new Queen(this, 3, 7, true));
+        // pieceList.add(new Knight(this, 1, 7, true));
+        // pieceList.add(new Bishop(this, 2, 7, true));
+        // pieceList.add(new Queen(this, 3, 7, true));
         pieceList.add(new King(this, 4, 7, true));
-        pieceList.add(new Bishop(this, 5, 7, true));
-        pieceList.add(new Knight(this, 6, 7, true));
+        // pieceList.add(new Bishop(this, 5, 7, true));
+        // pieceList.add(new Knight(this, 6, 7, true));
         pieceList.add(new Rook(this, 7, 7, true));
         // Pawns
-        for(int col = 0; col < cols; col++)
-            pieceList.add(new Pawn(this, col, 6, true));
+        // for(int col = 0; col < cols; col++)
+        //     pieceList.add(new Pawn(this, col, 6, true));
         for (Piece piece : pieceList) {
             piece.isFirstMove = true;
         }

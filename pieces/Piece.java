@@ -23,7 +23,7 @@ public class Piece {
     BufferedImage sheet;
     {
         try {
-        sheet = ImageIO.read(ClassLoader.getSystemResourceAsStream("res\\pieces.png"));
+        sheet = ImageIO.read(ClassLoader.getSystemResourceAsStream("res\\images\\pieces.png"));
         } catch (IOException e){
             e.printStackTrace();
         }

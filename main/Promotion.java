@@ -27,7 +27,7 @@ public class Promotion {
         Image queenSprite, rookSprite, knightSprite, bishopSprite;
         Image queenSpriteLarge, rookSpriteLarge, knightSpriteLarge, bishopSpriteLarge;
         try {
-            sheet = ImageIO.read(ClassLoader.getSystemResourceAsStream("res\\pieces.png"));
+            sheet = ImageIO.read(ClassLoader.getSystemResourceAsStream("res\\images\\icno.png"));
             sheetScale = sheet.getWidth() / 6;
             int yOffset = isRacist ? 0 : sheetScale;
             // Normal size (tileSize / 2)
@@ -180,7 +180,7 @@ public class Promotion {
         dialog.pack();
         dialog.setLocationRelativeTo(parent);
         try {
-            ImageIcon icon = new ImageIcon("res\\icno.png");
+            ImageIcon icon = new ImageIcon("res\\images\\icno.png");
             dialog.setIconImage(icon.getImage());
         } catch (Exception e) {
             e.printStackTrace();

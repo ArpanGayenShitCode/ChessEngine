@@ -21,7 +21,7 @@ public class TitleScreen extends JPanel {
 
         // Title
         JLabel titleLabel = new JLabel("Scaccomatto");
-        titleLabel.setFont(new Font("ITC Benguiat Book", Font.BOLD, 48));
+        titleLabel.setFont(Fonts.load("BlackOpsOne", Font.BOLD, 64));
         titleLabel.setForeground(TEXT_COLOR);
         titleLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
         content.add(titleLabel);
@@ -48,7 +48,7 @@ public class TitleScreen extends JPanel {
 
     private JButton createStyledButton(String text) {
         JButton button = new JButton(text);
-        button.setFont(new Font("Monda", Font.PLAIN, 24));
+        button.setFont(Fonts.load("Montserrat", Font.PLAIN, 24));
         button.setBackground(BUTTON_COLOR);
         button.setForeground(TEXT_COLOR);
         button.setBorder(BorderFactory.createLineBorder(TEXT_COLOR, 2));
@@ -60,8 +60,8 @@ public class TitleScreen extends JPanel {
             @Override
             public void mouseEntered(MouseEvent e) {
                 button.setBorder(BorderFactory.createLineBorder(TEXT_COLOR, 4));
-                button.setBackground(new Color(61, 113, 156)); //rgb(23, 21, 19)
-                button.setFont(new Font("Monda", Font.BOLD, 30));
+                button.setBackground(new Color(27, 199, 162)); //rgb(27, 199, 162)
+                button.setFont(Fonts.load("Montserrat", Font.BOLD, 30));
                 button.revalidate();
             }
 
@@ -69,11 +69,45 @@ public class TitleScreen extends JPanel {
             public void mouseExited(MouseEvent e) {
                 button.setBorder(BorderFactory.createLineBorder(TEXT_COLOR, 2));
                 button.setBackground(BUTTON_COLOR);
-                button.setFont(new Font("Monda", Font.PLAIN, 24));
+                button.setFont(Fonts.load("Montserrat", Font.PLAIN, 30));
                 button.revalidate();
             }
         });
 
         return button;
+    }
+}
+class CreditScreen extends JPanel {
+    public CreditScreen(CardLayout cardLayout, JPanel cardPanel) {
+        setBackground(new Color(23, 21, 19));
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+
+        JLabel title = new JLabel("Credits");
+        title.setFont(Fonts.load("BlackOpsOne", Font.BOLD, 64));
+        title.setForeground(Color.WHITE);
+        title.setAlignmentX(Component.CENTER_ALIGNMENT);
+        add(Box.createVerticalStrut(50));
+        add(title);
+
+        JLabel code = new JLabel("Lead Programmer");
+        code.setFont(Fonts.load("CrimsonText", Font.PLAIN, 40));
+        code.setForeground(Color.WHITE);
+        code.setAlignmentX(Component.CENTER_ALIGNMENT);
+        add(Box.createVerticalStrut(20));
+        add(code);
+
+        JLabel name = new JLabel("Arpan Gayen XI A");
+        name.setFont(Fonts.load("DancingScript", Font.PLAIN, 24));
+        name.setForeground(Color.WHITE);
+        name.setAlignmentX(Component.CENTER_ALIGNMENT);
+        add(Box.createVerticalStrut(20));
+        add(name);
+
+        JButton backButton = new JButton("Back");
+        backButton.setFont(Fonts.load("Montserrat", Font.PLAIN, 20));
+        backButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        backButton.addActionListener(e -> cardLayout.show(cardPanel, "Title"));
+        add(Box.createVerticalStrut(40));
+        add(backButton);
     }
 }
