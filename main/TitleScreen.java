@@ -94,6 +94,8 @@ class CreditScreen extends JPanel {
         code.setForeground(Color.WHITE);
         code.setAlignmentX(Component.CENTER_ALIGNMENT);
         add(Box.createVerticalStrut(10));
+        code.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
+        code.setOpaque(false);
         add(code);
 
         JLabel name = new JLabel("Arpan Gayen XI A");

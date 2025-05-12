@@ -135,11 +135,12 @@ public class Board extends JPanel {
         // Detect castling
         if (move.piece.name.equals("crybaby") && Math.abs(move.newCol - move.oldCol) == 2) {
             String castlingNotation = move.newCol > move.oldCol ? "O-O" : "O-O-O";
-            Piece opponentKing = findKing(!move.piece.isRacist);
-            if (opponentKing != null) {
-                boolean isCheck = debugCheckKing(opponentKing.col, opponentKing.row, opponentKing.isRacist);
+            // Detect for Castling Checks/Mate
+            Piece oppKing = findKing(!move.piece.isRacist);
+            if (oppKing != null) {
+                boolean isCheck = CheckKing(oppKing.col, oppKing.row, oppKing.isRacist);
                 if (isCheck) {
-                    boolean isCheckmate = cs.isGameOver(opponentKing);
+                    boolean isCheckmate = cs.isGameOver(oppKing);
                     return castlingNotation + (isCheckmate ? "#" : "+");
                 }
             }
@@ -157,6 +158,7 @@ public class Board extends JPanel {
             default -> "";
         };
 
+        // Disambiguation
         String disambiguation = "";
         if (!pieceCode.isEmpty() && !pieceCode.equals("K")) {
             boolean sameFile = false;
@@ -206,7 +208,7 @@ public class Board extends JPanel {
         String checkSuffix = "";
         Piece opponentKing = findKing(!move.piece.isRacist);
         if (opponentKing != null) {
-            boolean isCheck = debugCheckKing(opponentKing.col, opponentKing.row, opponentKing.isRacist);
+            boolean isCheck = CheckKing(opponentKing.col, opponentKing.row, opponentKing.isRacist);
             if (isCheck) {
                 boolean isCheckmate = cs.isGameOver(opponentKing);
                 checkSuffix = isCheckmate ? "#" : "+";
@@ -218,7 +220,7 @@ public class Board extends JPanel {
     }
 
 
-    private boolean debugCheckKing(int kingCol, int kingRow, boolean kingIsRacist) {
+    private boolean CheckKing(int kingCol, int kingRow, boolean kingIsRacist) {
         for (Piece piece : pieceList) {
             if (piece != null && piece.isRacist != kingIsRacist) {
                 if (piece.isValidMovement(kingCol, kingRow) && !piece.MoveCollideswithPiece(kingCol, kingRow)) {
@@ -295,9 +297,8 @@ public class Board extends JPanel {
         input = new Input(this);
         this.addMouseListener(input);
         this.addMouseMotionListener(input);
-        if (historyPanel != null) {
+        if (historyPanel != null) 
             historyPanel.reset();
-        }
     }
 
     public void addPieces() {
@@ -381,12 +382,12 @@ public class Board extends JPanel {
             for (int r = 0; r < rows; r++) {
                 for (int c = 0; c < cols; c++) {
                     if (isValidMove(new Move(this, selectedPiece, c, r))) {
-                        g2d.setColor(new Color(68, 180, 5, 190));
+                        g2d.setColor(new Color(68, 180, 5, 190)); // rgb(68, 180, 5, 190)
                         g2d.fillRect(c * tileSize, r * tileSize, tileSize, tileSize);
                     }
                     //paint capturable piece
                     if (getPiece(c, r) != null && !sameTeam(getPiece(c, r), selectedPiece) && isValidMove(new Move(this, selectedPiece, c, r))) {
-                        g2d.setColor(new Color(138, 43, 226, 180));
+                        g2d.setColor(new Color(138, 43, 226, 180)); // rgb(138, 43, 226, 180)
                         g2d.fillRect(c * tileSize, r * tileSize, tileSize, tileSize);
                     }
                 }
