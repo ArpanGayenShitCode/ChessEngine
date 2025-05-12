@@ -20,7 +20,7 @@ public class Board extends JPanel {
     public CheckScanner cs = new CheckScanner(this);
 
     public int enPassantTile = -1;
-    private boolean isRacistMove = true;
+    boolean isRacistMove = true;
     private boolean isGameOver = false;
     private boolean justReset = false;
     private String lastPromotionResult = null;
@@ -157,42 +157,29 @@ public class Board extends JPanel {
             default -> "";
         };
 
-        //ts doesnt fucking work kuahsILWDjkuhedfewbf
         String disambiguation = "";
         if (!pieceCode.isEmpty() && !pieceCode.equals("K")) {
-            boolean needsFile = false;
-            boolean needsRank = false;
-            int sameFileCount = 0;
-            int sameRankCount = 0;
-            
+            boolean sameFile = false;
+            boolean sameRank = false;
+            boolean conflict = false;
+
             for (Piece other : pieceList) {
-                if (other == move.piece || !other.name.equals(move.piece.name) || other.isRacist != move.piece.isRacist) {
+                if (other == move.piece || !other.name.equals(move.piece.name) || other.isRacist != move.piece.isRacist)
                     continue;
-                }
-                Move altMove = new Move(this, other, move.newCol, move.newRow);
-                if (isValidMove(altMove)) {
-                    if (other.col == move.oldCol) {
-                        sameFileCount++;
-                        needsRank = true; // Multiple pieces on the same file
-                    } else if (other.row == move.oldRow) {
-                        sameRankCount++;
-                        needsFile = true; // Multiple pieces on the same rank
-                    } else {
-                        needsFile = true; // Different file and rank, need file to disambiguate
-                    }
+
+                if (other.isValidMovement(move.newCol, move.newRow)) {
+                    if (other.col == move.oldCol) sameFile = true;
+                    if (other.row == move.oldRow) sameRank = true;
+                    if (other.col != move.oldCol && other.row != move.oldRow) conflict = true;
                 }
             }
 
-            // Determine disambiguation based on need
-            if (needsFile && needsRank) {
-                // Rare case: both file and rank needed (e.g., three knights on same rank and file)
+            if (conflict || (sameFile && sameRank)) {
                 disambiguation = (char)('a' + move.oldCol) + String.valueOf(8 - move.oldRow);
-            } else if (needsFile || sameFileCount > 0) {
-                // Prefer file disambiguation if multiple pieces can move to the square
-                disambiguation = String.valueOf((char)('a' + move.oldCol));
-            } else if (needsRank || sameRankCount > 0) {
-                // Use rank if file is the same for multiple pieces
+            } else if (sameFile) {
                 disambiguation = String.valueOf(8 - move.oldRow);
+            } else if (sameRank) {
+                disambiguation = String.valueOf((char)('a' + move.oldCol));
             }
         }
 

@@ -16,7 +16,6 @@ public class Main {
         CardLayout cardLayout = new CardLayout();
         JPanel cardPanel = new JPanel(cardLayout);
 
-        // Game screen components
         MoveHistoryPanel moveHistoryPanel = new MoveHistoryPanel();
         Board board = new Board();
         board.setMoveHistoryPanel(moveHistoryPanel);
@@ -31,7 +30,6 @@ public class Main {
         gamePanel.add(boardWrapper, BorderLayout.CENTER);
         gamePanel.add(moveHistoryPanel, BorderLayout.EAST);
 
-        // Title and credit screens
         TitleScreen titleScreen = new TitleScreen(frame, cardLayout, cardPanel);
         CreditScreen creditScreen = new CreditScreen(cardLayout, cardPanel);
 
