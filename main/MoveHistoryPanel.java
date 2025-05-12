@@ -52,7 +52,7 @@ public class MoveHistoryPanel extends JPanel {
         label.setFont(Fonts.load("JetBrainsMono", Font.PLAIN, 14));
         label.setBorder(BorderFactory.createEmptyBorder(8, 10, 8, 10));
         label.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30));
-        label.setHorizontalAlignment(SwingConstants.RIGHT); 
+        label.setHorizontalAlignment(SwingConstants.LEFT); 
         return label;
     }
 

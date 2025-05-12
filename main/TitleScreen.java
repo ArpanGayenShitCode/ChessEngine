@@ -61,7 +61,7 @@ public class TitleScreen extends JPanel {
             public void mouseEntered(MouseEvent e) {
                 button.setBorder(BorderFactory.createLineBorder(TEXT_COLOR, 4));
                 button.setBackground(new Color(27, 199, 162)); //rgb(27, 199, 162)
-                button.setFont(Fonts.load("Montserrat", Font.BOLD, 30));
+                button.setFont(Fonts.load("Monda", Font.BOLD, 30));
                 button.revalidate();
             }
 
@@ -90,21 +90,21 @@ class CreditScreen extends JPanel {
         add(title);
 
         JLabel code = new JLabel("Lead Programmer");
-        code.setFont(Fonts.load("CrimsonText", Font.PLAIN, 40));
+        code.setFont(Fonts.load("CrimsonText", Font.BOLD, 40));
         code.setForeground(Color.WHITE);
         code.setAlignmentX(Component.CENTER_ALIGNMENT);
-        add(Box.createVerticalStrut(20));
+        add(Box.createVerticalStrut(10));
         add(code);
 
         JLabel name = new JLabel("Arpan Gayen XI A");
         name.setFont(Fonts.load("DancingScript", Font.PLAIN, 24));
         name.setForeground(Color.WHITE);
         name.setAlignmentX(Component.CENTER_ALIGNMENT);
-        add(Box.createVerticalStrut(20));
+        add(Box.createVerticalStrut(10));
         add(name);
 
         JButton backButton = new JButton("Back");
-        backButton.setFont(Fonts.load("Montserrat", Font.PLAIN, 20));
+        backButton.setFont(Fonts.load("Monda", Font.PLAIN, 20));
         backButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         backButton.addActionListener(e -> cardLayout.show(cardPanel, "Title"));
         add(Box.createVerticalStrut(40));

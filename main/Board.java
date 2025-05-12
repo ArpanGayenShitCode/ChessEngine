@@ -41,7 +41,6 @@ public class Board extends JPanel {
     }
 
     public void makeMove(Move move) {
-        // Store isFirstMove before updating it
         boolean wasFirstMove = move.piece.isFirstMove;
 
         if (move.piece.name.equals("juicer")) {
@@ -63,11 +62,10 @@ public class Board extends JPanel {
         isRacistMove = !isRacistMove;
         repaint();
 
-        // Add move to history before checking game state
         if (historyPanel != null) {
             String notation = convertToAlgebraic(move, wasFirstMove);
             historyPanel.addMove(notation, move.piece.isRacist);
-            // Force history panel repaint
+
             historyPanel.revalidate();
             historyPanel.repaint();
         }
@@ -401,7 +399,7 @@ public class Board extends JPanel {
                     }
                     //paint capturable piece
                     if (getPiece(c, r) != null && !sameTeam(getPiece(c, r), selectedPiece) && isValidMove(new Move(this, selectedPiece, c, r))) {
-                        g2d.setColor(new Color(200, 5, 0, 240));
+                        g2d.setColor(new Color(138, 43, 226, 180));
                         g2d.fillRect(c * tileSize, r * tileSize, tileSize, tileSize);
                     }
                 }

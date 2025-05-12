@@ -11,19 +11,19 @@ public class GameOverDialog {
         this.board = (Board) parent;
         dialog = new JDialog(SwingUtilities.getWindowAncestor(parent), "Game Over", Dialog.ModalityType.APPLICATION_MODAL);
         dialog.setUndecorated(true);
-        dialog.getContentPane().setBackground(new Color(27, 199, 162));
+        dialog.getContentPane().setBackground(new Color(0, 180, 160));
 
         // Create panel
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.setBackground(new Color(27, 199, 162));
+        panel.setBackground(new Color(0, 180, 160));
         panel.setBorder(BorderFactory.createCompoundBorder(
             BorderFactory.createLineBorder(Color.BLACK, 1),
             BorderFactory.createEmptyBorder(20, 20, 20, 20)
         ));
 
         JLabel statusLabel = new JLabel(isCheckmate ? "CHECKMATE" : "STALEMATE");
-        statusLabel.setFont(new Font("ITC Benguiat Book", Font.BOLD, 45));
+        statusLabel.setFont(Fonts.load("BlackOpsOne", Font.BOLD, 45));
         statusLabel.setForeground(Color.WHITE);
         statusLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         panel.add(statusLabel);
@@ -44,12 +44,12 @@ public class GameOverDialog {
 
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 0));
-        buttonPanel.setBackground(new Color(27, 199, 162));
+        buttonPanel.setBackground(new Color(0, 180, 160));
 
         // New Game button
         JButton newGameButton = new JButton("New Game");
-        newGameButton.setFont(new Font("Monda", Font.PLAIN, 18));
-        newGameButton.setBackground(new Color(27, 199, 162));
+        newGameButton.setFont(Fonts.load("Monda", Font.PLAIN, 18));
+        newGameButton.setBackground(new Color(0, 180, 160));
         newGameButton.setForeground(Color.WHITE);
         newGameButton.setBorder(BorderFactory.createLineBorder(Color.WHITE));
         newGameButton.addActionListener(e -> {
@@ -60,8 +60,8 @@ public class GameOverDialog {
 
         // Quit button
         JButton quitButton = new JButton("Quit");
-        quitButton.setFont(new Font("Monda", Font.PLAIN, 18));
-        quitButton.setBackground(new Color(27, 199, 162));
+        quitButton.setFont(Fonts.load("Monda", Font.PLAIN, 18));
+        quitButton.setBackground(new Color(0, 180, 160));
         quitButton.setForeground(Color.WHITE);
         quitButton.setBorder(BorderFactory.createLineBorder(Color.WHITE));
         quitButton.addActionListener(e -> System.exit(0));

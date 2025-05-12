@@ -27,7 +27,7 @@ public class Promotion {
         Image queenSprite, rookSprite, knightSprite, bishopSprite;
         Image queenSpriteLarge, rookSpriteLarge, knightSpriteLarge, bishopSpriteLarge;
         try {
-            sheet = ImageIO.read(ClassLoader.getSystemResourceAsStream("res\\images\\icno.png"));
+            sheet = ImageIO.read(ClassLoader.getSystemResourceAsStream("res\\images\\pieces.png"));
             sheetScale = sheet.getWidth() / 6;
             int yOffset = isRacist ? 0 : sheetScale;
             // Normal size (tileSize / 2)
