@@ -31,7 +31,7 @@ public class GameOverDialog {
         // Outcome label
         String outcomeText;
         if (isCheckmate) {
-            outcomeText = (isRacistMove ? "Black" : "White") + " emerged Victorious";
+            outcomeText = (isRacistMove ? "Black" : "White") + " emerged Victorious!!";
         } else {
             outcomeText = "The game is a draw";
         }
