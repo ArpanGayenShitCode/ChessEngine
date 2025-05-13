@@ -94,16 +94,29 @@ class CreditScreen extends JPanel {
         code.setForeground(Color.WHITE);
         code.setAlignmentX(Component.CENTER_ALIGNMENT);
         add(Box.createVerticalStrut(10));
-        code.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
-        code.setOpaque(false);
         add(code);
 
-        JLabel name = new JLabel("Arpan Gayen XI A");
-        name.setFont(Fonts.load("DancingScript", Font.PLAIN, 24));
-        name.setForeground(Color.WHITE);
-        name.setAlignmentX(Component.CENTER_ALIGNMENT);
+        JLabel prog_lead = new JLabel("Arpan Gayen XI A");
+        prog_lead.setFont(Fonts.load("DancingScript", Font.PLAIN, 24));
+        prog_lead.setForeground(Color.WHITE);
+        prog_lead.setAlignmentX(Component.CENTER_ALIGNMENT);
         add(Box.createVerticalStrut(10));
-        add(name);
+        add(prog_lead);
+
+        JLabel graphics = new JLabel("Lead Graphics Designer");
+        graphics.setFont(Fonts.load("CrimsonText", Font.BOLD, 40));
+        graphics.setForeground(Color.WHITE);
+        graphics.setAlignmentX(Component.CENTER_ALIGNMENT);
+        add(Box.createVerticalStrut(10));
+        add(graphics);
+
+        JLabel graph_lead = new JLabel("Aniruddha Malick XI C");
+        graph_lead.setFont(Fonts.load("DancingScript", Font.PLAIN, 24));
+        graph_lead.setForeground(Color.WHITE);
+        graph_lead.setAlignmentX(Component.CENTER_ALIGNMENT);
+        add(Box.createVerticalStrut(10));
+        add(graph_lead);
+
 
         JButton backButton = new JButton("Back");
         backButton.setFont(Fonts.load("Monda", Font.PLAIN, 20));

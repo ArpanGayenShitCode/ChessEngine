@@ -163,7 +163,6 @@ public class Board extends JPanel {
         if (!pieceCode.isEmpty() && !pieceCode.equals("K")) {
             boolean sameFile = false;
             boolean sameRank = false;
-            boolean conflict = false;
 
             for (Piece other : pieceList) {
                 if (other == move.piece || !other.name.equals(move.piece.name) || other.isRacist != move.piece.isRacist)
@@ -172,15 +171,13 @@ public class Board extends JPanel {
                 if (other.isValidMovement(move.newCol, move.newRow)) {
                     if (other.col == move.oldCol) sameFile = true;
                     if (other.row == move.oldRow) sameRank = true;
-                    if (other.col != move.oldCol && other.row != move.oldRow) conflict = true;
                 }
             }
 
-            if (conflict || (sameFile && sameRank)) {
-                disambiguation = (char)('a' + move.oldCol) + String.valueOf(8 - move.oldRow);
-            } else if (sameFile) {
+            if (sameFile) {
                 disambiguation = String.valueOf(8 - move.oldRow);
-            } else if (sameRank) {
+            } 
+            else if (sameRank) {
                 disambiguation = String.valueOf((char)('a' + move.oldCol));
             }
         }
