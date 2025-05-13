@@ -168,7 +168,7 @@ public class Board extends JPanel {
                 if (other == move.piece || !other.name.equals(move.piece.name) || other.isRacist != move.piece.isRacist)
                     continue;
 
-                if (other.isValidMovement(move.newCol, move.newRow)) {
+                if (other.isValidMovement(move.newCol, move.newRow) && !other.MoveCollideswithPiece(move.newCol, move.newRow)) {
                     if (other.col == move.oldCol) sameFile = true;
                     if (other.row == move.oldRow) sameRank = true;
                 }
@@ -203,11 +203,11 @@ public class Board extends JPanel {
 
         // Check and checkmate
         String checkSuffix = "";
-        Piece opponentKing = findKing(!move.piece.isRacist);
-        if (opponentKing != null) {
-            boolean isCheck = CheckKing(opponentKing.col, opponentKing.row, opponentKing.isRacist);
+        Piece oppKing = findKing(!move.piece.isRacist);
+        if (oppKing != null) {
+            boolean isCheck = CheckKing(oppKing.col, oppKing.row, oppKing.isRacist);
             if (isCheck) {
-                boolean isCheckmate = cs.isGameOver(opponentKing);
+                boolean isCheckmate = cs.isGameOver(oppKing);
                 checkSuffix = isCheckmate ? "#" : "+";
             }
         }

@@ -11,12 +11,12 @@ public class GameOverDialog {
         this.board = (Board) parent;
         dialog = new JDialog(SwingUtilities.getWindowAncestor(parent), "Game Over", Dialog.ModalityType.APPLICATION_MODAL);
         dialog.setUndecorated(true);
-        dialog.getContentPane().setBackground(new Color(0, 180, 160));
+        dialog.getContentPane().setBackground(new Color(34, 76, 79));
 
         // Create panel
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.setBackground(new Color(0, 180, 160));
+        panel.setBackground(new Color(34, 76, 79));
         panel.setBorder(BorderFactory.createCompoundBorder(
             BorderFactory.createLineBorder(Color.BLACK, 1),
             BorderFactory.createEmptyBorder(20, 20, 20, 20)
@@ -31,7 +31,7 @@ public class GameOverDialog {
         // Outcome label
         String outcomeText;
         if (isCheckmate) {
-            outcomeText = (isRacistMove ? "Black" : "White") + " emerged Victorious!!";
+            outcomeText = (!isRacistMove ? "White" : "Black") + " emerged Victorious!!";
         } else {
             outcomeText = "The game is a draw";
         }
@@ -44,12 +44,12 @@ public class GameOverDialog {
 
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 0));
-        buttonPanel.setBackground(new Color(0, 180, 160));
+        buttonPanel.setBackground(new Color(34, 76, 79));
 
         // New Game button
         JButton newGameButton = new JButton("New Game");
         newGameButton.setFont(Fonts.load("Monda", Font.PLAIN, 18));
-        newGameButton.setBackground(new Color(0, 180, 160));
+        newGameButton.setBackground(new Color(34, 76, 79));
         newGameButton.setForeground(Color.WHITE);
         newGameButton.setBorder(BorderFactory.createLineBorder(Color.WHITE));
         newGameButton.addActionListener(e -> {
@@ -61,7 +61,7 @@ public class GameOverDialog {
         // Quit button
         JButton quitButton = new JButton("Quit");
         quitButton.setFont(Fonts.load("Monda", Font.PLAIN, 18));
-        quitButton.setBackground(new Color(0, 180, 160));
+        quitButton.setBackground(new Color(34, 76, 79));
         quitButton.setForeground(Color.WHITE);
         quitButton.setBorder(BorderFactory.createLineBorder(Color.WHITE));
         quitButton.addActionListener(e -> System.exit(0));

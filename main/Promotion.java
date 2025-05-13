@@ -16,12 +16,10 @@ public class Promotion {
     public Promotion(Component parent, boolean isRacist, int tileSize) {
 
 
-        // Create dialog
         dialog = new JDialog(SwingUtilities.getWindowAncestor(parent), "Time To Decide", Dialog.ModalityType.APPLICATION_MODAL);
         dialog.setUndecorated(true);
         dialog.getContentPane().setBackground(new Color(23, 21, 19));
 
-        // Load piece sprites
         BufferedImage sheet;
         int sheetScale;
         Image queenSprite, rookSprite, knightSprite, bishopSprite;
@@ -30,7 +28,7 @@ public class Promotion {
             sheet = ImageIO.read(ClassLoader.getSystemResourceAsStream("res\\images\\pieces.png"));
             sheetScale = sheet.getWidth() / 6;
             int yOffset = isRacist ? 0 : sheetScale;
-            // Normal size (tileSize / 2)
+            // Normal size
             queenSprite = sheet.getSubimage(1 * sheetScale, yOffset, sheetScale, sheetScale)
                 .getScaledInstance(tileSize / 2, tileSize / 2, BufferedImage.SCALE_SMOOTH);
             rookSprite = sheet.getSubimage(4 * sheetScale, yOffset, sheetScale, sheetScale)
@@ -39,7 +37,7 @@ public class Promotion {
                 .getScaledInstance(tileSize / 2, tileSize / 2, BufferedImage.SCALE_SMOOTH);
             bishopSprite = sheet.getSubimage(2 * sheetScale, yOffset, sheetScale, sheetScale)
                 .getScaledInstance(tileSize / 2, tileSize / 2, BufferedImage.SCALE_SMOOTH);
-            // Large size (tileSize * 3/4)
+            // Large size
             queenSpriteLarge = sheet.getSubimage(1 * sheetScale, yOffset, sheetScale, sheetScale)
                 .getScaledInstance(tileSize * 3 / 4, tileSize * 3 / 4, BufferedImage.SCALE_SMOOTH);
             rookSpriteLarge = sheet.getSubimage(4 * sheetScale, yOffset, sheetScale, sheetScale)
