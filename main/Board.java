@@ -100,6 +100,7 @@ public class Board extends JPanel {
         }
         colourIndex = move.piece.isRacist ? 0 : 7;
         if (move.newRow == colourIndex) {
+            repaint();
             promotePawn(move);
         }
     }
@@ -374,7 +375,7 @@ public class Board extends JPanel {
             }
         }
 
-        // paint highlights
+        // paint legal move highlights
         if (selectedPiece != null) {
             for (int r = 0; r < rows; r++) {
                 for (int c = 0; c < cols; c++) {
