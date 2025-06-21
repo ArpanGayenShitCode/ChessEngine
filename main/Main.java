@@ -32,8 +32,10 @@ public class Main {
 
         TitleScreen titleScreen = new TitleScreen(frame, cardLayout, cardPanel);
         CreditScreen creditScreen = new CreditScreen(cardLayout, cardPanel);
+        MultiplayerScreen multiplayerScreen = new MultiplayerScreen(cardLayout, cardPanel);
 
         cardPanel.add(titleScreen, "Title");
+        cardPanel.add(multiplayerScreen, "Multiplayer");;
         cardPanel.add(gamePanel, "Game");
         cardPanel.add(creditScreen, "Credits");
 
