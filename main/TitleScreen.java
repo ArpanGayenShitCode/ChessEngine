@@ -185,6 +185,11 @@ class MultiplayerScreen extends JPanel {
     private static final Image BACKGROUND_IMAGE = new ImageIcon("res\\images\\bg.jpg").getImage();
     private static final Color BUTTON_COLOR = new Color(235, 236, 238);
     private static final Color TEXT_COLOR = Color.BLACK;
+
+    private final JTextField nameField = new JTextField();
+    private final JTextField ipField = new JTextField("localhost");
+    private final JTextField portField = new JTextField("5000");
+    
     public MultiplayerScreen(CardLayout cardLayout, JPanel cardPanel) {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
@@ -197,11 +202,38 @@ class MultiplayerScreen extends JPanel {
         title.setFont(Fonts.load("BlackOpsOne", Font.BOLD, 64));
         title.setForeground(Color.BLACK);
         title.setAlignmentX(Component.LEFT_ALIGNMENT);
-        content.add(Box.createVerticalStrut(50));
         content.add(title);
-        
 
-        
+        JLabel nameLabel = new JLabel("Username:");
+        nameLabel.setFont(Fonts.load("Monda", Font.PLAIN, 24));
+        nameLabel.setForeground(TEXT_COLOR);
+        nameLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        content.add(nameLabel);
+
+        styleInputField(nameField);
+        content.add(nameField);
+        content.add(Box.createVerticalStrut(20));
+
+        JLabel ipLabel = new JLabel("Server IP:");
+        ipLabel.setFont(Fonts.load("Monda", Font.PLAIN, 24));
+        ipLabel.setForeground(TEXT_COLOR);
+        ipLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        content.add(ipLabel);
+
+        styleInputField(ipField);
+        content.add(ipField);
+        content.add(Box.createVerticalStrut(20));
+
+        JLabel portLabel = new JLabel("Port:");
+        portLabel.setFont(Fonts.load("Monda", Font.PLAIN, 24));
+        portLabel.setForeground(TEXT_COLOR);
+        portLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        content.add(portLabel);
+
+        styleInputField(portField);
+        content.add(portField);
+        content.add(Box.createVerticalStrut(40));
+                
         JButton backButton = createStyledButton("Back");
         backButton.addActionListener(e -> cardLayout.show(cardPanel, "Title"));
         content.add(Box.createVerticalStrut(40));
@@ -209,6 +241,29 @@ class MultiplayerScreen extends JPanel {
 
         add(content, BorderLayout.WEST);
     }
+
+    public String getIP() {
+        return ipField.getText().trim();
+    }
+
+    public String getName() {
+        return nameField.getText().trim();
+    }
+
+    public int getPort() {
+        try {
+            return Integer.parseInt(portField.getText().trim());
+        } catch (NumberFormatException e) {
+            return 5000;
+        }
+    }
+
+    private void styleInputField(JTextField field) {
+        field.setFont(Fonts.load("Montserrat", Font.PLAIN, 24));
+        field.setMaximumSize(new Dimension(300, 40));
+        field.setAlignmentX(Component.LEFT_ALIGNMENT);
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
